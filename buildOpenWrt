@@ -1,0 +1,51 @@
+#!/bin/bash
+
+#*****************************************************************************
+#
+# Build environment - Ubuntu 64-bit Server 24.04.2
+#
+# sudo apt update
+# sudo apt install build-essential clang flex bison g++ gawk \
+# gcc-multilib g++-multilib gettext git libncurses-dev libssl-dev \
+# python3-setuptools rsync swig unzip zlib1g-dev file wget
+#
+#*****************************************************************************
+
+echo "clean up previous attempt"
+rm -rf openwrt
+rm -rf mtk-openwrt-feeds
+
+echo "clone openwrt branch"
+git clone --branch openwrt-24.10 https://git.openwrt.org/openwrt/openwrt.git openwrt || true
+cd openwrt; git checkout 3a481ae21bdc504f7f0325151ee0cb4f25dfd2cd; cd -;		#toolchain: mold: add PKG_NAME to Makefile
+
+echo "clone mtk branch"
+git clone https://git01.mediatek.com/openwrt/feeds/mtk-openwrt-feeds || true
+cd mtk-openwrt-feeds; git checkout 1a64a92eb31dd81ac0e7c16d67fcd579b13780a6; cd -;	#[kernel-6.6][mt7987][switch][Add AN8855 gsw driver]
+
+
+echo '### wireless-regdb modification - this remove all regdb wireless countries restrictions'
+rm -rf openwrt/package/firmware/wireless-regdb/patches/*.*
+rm -rf mtk-openwrt-feeds/autobuild/unified/filogic/mac80211/24.10/files/package/firmware/wireless-regdb/patches/*.*
+\cp -r patch/500-tx_power.patch mtk-openwrt-feeds/autobuild/unified/filogic/mac80211/24.10/files/package/firmware/wireless-regdb/patches
+\cp -r patch/regdb.Makefile openwrt/package/firmware/wireless-regdb/Makefile
+
+### jumbo frames support
+\cp -r my_files/750-mtk-eth-add-jumbo-frame-support-mt7998.patch openwrt/target/linux/mediatek/patches-6.6
+
+### tx_power patch - required for BE14 boards with defective eeprom flash
+#\cp -r my_files/99999_tx_power_check.patch mtk-openwrt-feeds/autobuild/unified/filogic/mac80211/24.10/files/package/kernel/mt76/patches/
+
+### tx_power patch - by dan pawlik
+\cp -r my_files/99999_tx_power_check_by_dan_pawlik.patch mtk-openwrt-feeds/autobuild/unified/filogic/mac80211/24.10/files/package/kernel/mt76/patches/
+
+### required & thermal zone 
+\cp -r my_files/1007-wozi-arch-arm64-dts-mt7988a-add-thermal-zone.patch mtk-openwrt-feeds/24.10/patches-base/
+
+
+
+
+umask 022
+git clone --depth 1 --branch master --single-branch --no-tags --recurse-submodules https://github.com/fantastic-packages/packages package/fantastic_packages
+
+
