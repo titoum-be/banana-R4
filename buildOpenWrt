@@ -21,12 +21,13 @@ cd openwrt; git checkout 3a481ae21bdc504f7f0325151ee0cb4f25dfd2cd; cd -;		#toolc
 
 echo "clone mtk branch"
 git clone https://git01.mediatek.com/openwrt/feeds/mtk-openwrt-feeds || true
-cd mtk-openwrt-feeds; git checkout 1a64a92eb31dd81ac0e7c16d67fcd579b13780a6; cd -;	#[kernel-6.6][mt7987][switch][Add AN8855 gsw driver]
-
+cd mtk-openwrt-feeds; git checkout 72fa6744f53dfccfbb2884de9e8aa8a3bf444e74; cd -;	#HEAD @ 72fa6744 [kernel-6.6][mt7987][switch][Add AN8855 gsw driver]
 
 echo '### wireless-regdb modification - this remove all regdb wireless countries restrictions ###'
 rm -rf openwrt/package/firmware/wireless-regdb/patches/*.*
 rm -rf mtk-openwrt-feeds/autobuild/unified/filogic/mac80211/24.10/files/package/firmware/wireless-regdb/patches/*.*
+\cp -r patch/500-tx_power.patch mtk-openwrt-feeds/autobuild/unified/filogic/mac80211/24.10/files/package/firmware/wireless-regdb/patches
+\cp -r patch/regdb.Makefile openwrt/package/firmware/wireless-regdb/Makefile
 
 echo '### jumbo frames support ###'
 \cp -r patch/750-mtk-eth-add-jumbo-frame-support-mt7998.patch openwrt/target/linux/mediatek/patches-6.6
@@ -45,7 +46,16 @@ sed -i 's/CONFIG_PACKAGE_perf=y/# CONFIG_PACKAGE_perf is not set/' mtk-openwrt-f
 sed -i 's/CONFIG_PACKAGE_perf=y/# CONFIG_PACKAGE_perf is not set/' mtk-openwrt-feeds/autobuild/autobuild_5.4_mac80211_release/mt7988_wifi7_mac80211_mlo/.config
 sed -i 's/CONFIG_PACKAGE_perf=y/# CONFIG_PACKAGE_perf is not set/' mtk-openwrt-feeds/autobuild/autobuild_5.4_mac80211_release/mt7986_mac80211/.config
 
+echo '### dive in ###'
 cd openwrt
+
+echo '### adapt feed rev ###'
+cat <<-EOF > feeds.conf.default
+src-git-full packages https://git.openwrt.org/feed/packages.git^e4be6db
+src-git-full luci https://git.openwrt.org/project/luci.git^9453d7d
+src-git-full routing https://git.openwrt.org/feed/routing.git^f2ee837
+EOF
+
 bash ../mtk-openwrt-feeds/autobuild/unified/autobuild.sh filogic-mac80211-mt7988_rfb-mt7996 log_file=make
 
 exit 0
