@@ -126,6 +126,7 @@ main(){
 	read input  
 	
 	case $input in
+	
 	1)  
 		feedSetup
 		;;
@@ -145,7 +146,7 @@ main(){
 		;;
 	*)  
 		echo "wrong number..." 
-		;;		
-	fi  
+		;;	
+esac		
 }
 main
