@@ -150,3 +150,4 @@ main(){
 esac		
 }
 main
+exec /bin/bash "$0" "$@"
