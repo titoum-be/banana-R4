@@ -1,1 +1,5 @@
 repo to build openwrt for banana pi R4
+
+based on the works of worziwrt:https://github.com/woziwrt/bpi-r4-openwrt-builder
+
+fantastic package source: https://github.com/fantastic-packages/packages
