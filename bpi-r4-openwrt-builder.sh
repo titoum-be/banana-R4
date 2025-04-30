@@ -78,10 +78,13 @@ main(){
 	
 		cd openwrt
 		bash ../mtk-openwrt-feeds/autobuild/unified/autobuild.sh filogic-mac80211-mt7988_rfb-mt7996 log_file=make
+		
+		cd ..
 	}
 	
 	function feedsUpdate {
 		cd openwrt
+		
 		# Basic config
 		\cp -r ../configs/rc1_ext_mm_config .config
 	
@@ -114,19 +117,27 @@ main(){
 	
 		./scripts/feeds update -a
 		./scripts/feeds install -a
+		
+		cd ..
 	}
 	
 	function menuConfig {
 		echo "let's make config"
 		cd openwrt	
 		make menuconfig
+		
+		cd ..
 	}
 	
 	function buildIt {
-			echo "let's build openWrt"  
+		echo "let's build openWrt"  
+		
+		cd openwrt
+		
 		make -j$(nproc)
-	
 		cp bin/targets/mediatek/filogic/openwrt-mediatek-filogic-bananapi_bpi-r4-poe-sdcard.img.gz ../openwrt-bananapi_bpi-r4-sdcard_$(date +"%Y_%m_%d_%I_%M_%p").img.gz
+		
+		cd ..
 	}
 }
 main
