@@ -20,15 +20,15 @@ main(){
 	
 	read input  
 	
-	if [ "$input" == "1" ]; then  
+	if [[ "$input" == "1" ]]; then  
 		feed
-	elif [ "$input" == "2" ]; then  
+	elif [[ "$input" == "2" ]]; then  
 		feedsUpdate
-	elif [ "$input" == "3" ]; then  
+	elif [[ "$input" == "3" ]]; then  
 		menuConfig
-	elif [ "$input" == "4" ]; then  
+	elif [[ "$input" == "4" ]]; then  
 		buildIt
-	elif [ "$input" == "5" ]; then 
+	elif [[ "$input" == "5" ]]; then 
 		feed
 		feedsUpdate
 		menuConfig
