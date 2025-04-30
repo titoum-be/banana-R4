@@ -10,35 +10,8 @@
 # python3-setuptools rsync swig unzip zlib1g-dev file wget
 #
 #*****************************************************************************
-main(){
-	echo "Hi There! what should we do!?"
-	echo "1) Prepare feeds!?"
-	echo "2) openwrt setup!?"
-	echo "3) menu Config setup"
-	echo "4) Make OpenWrt Great Again"
-	echo "5) Refresh all"
-	
-	read input  
-	
-	if [[ "$input" == "1" ]]; then  
-		feed
-	elif [[ "$input" == "2" ]]; then  
-		feedsUpdate
-	elif [[ "$input" == "3" ]]; then  
-		menuConfig
-	elif [[ "$input" == "4" ]]; then  
-		buildIt
-	elif [[ "$input" == "5" ]]; then 
-		feed
-		feedsUpdate
-		menuConfig
-	else  
-		echo "wrong number..."  
-	fi  
-}
-main
 
-function feed {
+feedSetup() {
 	echo "let's prepare feed!"  
 
 	rm -rf openwrt
@@ -84,7 +57,7 @@ function feed {
 	cd ..
 }
 
-function feedsUpdate {
+feedUpdate() {
 	cd openwrt
 	
 	# Basic config
@@ -123,7 +96,7 @@ function feedsUpdate {
 	cd ..
 }
 
-function menuConfig {
+menuConfig() {
 	echo "let's make config"
 	cd openwrt	
 	make menuconfig
@@ -131,7 +104,7 @@ function menuConfig {
 	cd ..
 }
 
-function buildIt {
+buildIt() {
 	echo "let's build openWrt"  
 	
 	cd openwrt
@@ -141,3 +114,31 @@ function buildIt {
 	
 	cd ..
 }
+
+main(){
+	echo "Hi There! what should we do!?"
+	echo "1) Prepare feeds!?"
+	echo "2) openwrt setup!?"
+	echo "3) menu Config setup"
+	echo "4) Make OpenWrt Great Again"
+	echo "5) Refresh all"
+	
+	read input  
+	
+	if [ "$input" == "1" ]; then  
+		feedSetup
+	elif [ "$input" == "2" ]; then  
+		feedUpdate
+	elif [ "$input" == "3" ]; then  
+		menuConfig
+	elif [ "$input" == "4" ]; then  
+		buildIt
+	elif [ "$input" == "5" ]; then 
+		feedSetup
+		feedUpdate
+		menuConfig
+	else  
+		echo "wrong number..."  
+	fi  
+}
+main
