@@ -81,6 +81,9 @@ feedUpdate() {
 	src-link fantastic_packages_special fantastic_packages/feeds/special
 	EOF
 
+ 	umask 022
+	git clone --depth 1 --branch master --single-branch --no-tags --recurse-submodules https://github.com/fantastic-packages/packages package/fantastic_packages
+
 	###### Then you can add all required additional feeds/packages ######### 
 
 	# qmi modems extension for example
