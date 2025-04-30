@@ -125,20 +125,27 @@ main(){
 	
 	read input  
 	
-	if [ "$input" == "1" ]; then  
+	case $input in
+	1)  
 		feedSetup
-	elif [ "$input" == "2" ]; then  
+		;;
+	2)  
 		feedUpdate
-	elif [ "$input" == "3" ]; then  
+		;;
+	3)  
 		menuConfig
-	elif [ "$input" == "4" ]; then  
+		;;
+	4) 
 		buildIt
-	elif [ "$input" == "5" ]; then 
+		;;
+	5)
 		feedSetup
 		feedUpdate
 		menuConfig
-	else  
-		echo "wrong number..."  
+		;;
+	*)  
+		echo "wrong number..." 
+		;;		
 	fi  
 }
 main
