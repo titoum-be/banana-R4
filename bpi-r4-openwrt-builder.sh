@@ -129,4 +129,4 @@ main(){
 		cp bin/targets/mediatek/filogic/openwrt-mediatek-filogic-bananapi_bpi-r4-poe-sdcard.img.gz ../openwrt-bananapi_bpi-r4-sdcard_$(date +"%Y_%m_%d_%I_%M_%p").img.gz
 	}
 }
-main | tee /dev/tty | festival --tts
+main
